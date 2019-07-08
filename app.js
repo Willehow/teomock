@@ -66,7 +66,7 @@ app.post('/login', (req, res) => {
   var cpf = req.body.username.replace(/\D/g, '');
   var password = req.body.password;
 
-  if ((cpf == "00000000002" || cpf == "00000000003" || cpf == "00000000004") && password == "20182018") {
+  if ((cpf == "00000000002" || cpf == "00000000003" || cpf == "00000000004" || cpf == "00000000005") && password == "20182018") {
 
     res.sendStatus(200);
   } else {
