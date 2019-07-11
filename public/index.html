@@ -32,20 +32,29 @@
             font-weight: 600;
             width: 100%;
         }
-    
-        :-ms-input-placeholder { /* IE 10+ */
+
+        :-ms-input-placeholder {
+            /* IE 10+ */
             color: #d3d3d3 !important;
         }
-        ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+
+        ::-webkit-input-placeholder {
+            /* Chrome/Opera/Safari */
             color: #d3d3d3 !important;
         }
-            ::-moz-placeholder { /* Firefox 19+ */
+
+        ::-moz-placeholder {
+            /* Firefox 19+ */
             color: #d3d3d3 !important;
         }
-            :-ms-input-placeholder { /* IE 10+ */
+
+        :-ms-input-placeholder {
+            /* IE 10+ */
             color: #d3d3d3 !important;
         }
-            :-moz-placeholder { /* Firefox 18- */
+
+        :-moz-placeholder {
+            /* Firefox 18- */
             color: #d3d3d3 !important;
         }
     </style>
@@ -70,14 +79,15 @@
                 </div>
                 <p>
                     <label for="username">CPF</label>
-                    <input type="tel" class="form-control" id="username" name="username" placeholder="000.000.000-00" maxlength="15" data-mask="000.000.000-00"
-                        required>
+                    <input type="tel" class="form-control" id="username" name="username" placeholder="000.000.000-00"
+                        maxlength="15" data-mask="000.000.000-00" required>
                 </p>
                 <p>
                     <label for="password">Senha*</label>
-                    <input type="password" pattern="[0-9]*" inputmode="numeric" class="form-control" id="password" name="password" placeholder="Ex: 12341985"
-                        maxlength="8" required>
-                    <p class="font-italic" style="font-size: 0.1in !important">*Sua senha é composta pelos 4 primeiros dígitos do CPF junto ao seu ano de nascimento.</p>
+                    <input type="password" pattern="[0-9]*" inputmode="numeric" class="form-control" id="password"
+                        name="password" placeholder="Ex: 12341985" maxlength="8" required>
+                    <p class="font-italic" style="font-size: 0.1in !important">*Sua senha é composta pelos 4 primeiros
+                        dígitos do CPF junto ao seu ano de nascimento.</p>
                 </p>
                 <p>
                     <input type="submit" value="Entrar" class="btn btn-login">
@@ -103,7 +113,8 @@
                 <p>Set your environment and app key</p>
 
                 <label for="app-key">App Key:</label>
-                <input type="text" id="app-key" name="app-key" value="dGVvY29uc3VsdG9ydmlydHVhbDpkYTllNGM5NS1hMmUwLTQzZGEtODJiYy0zNjU0YTYyMTYyMmU=">
+                <input type="text" id="app-key" name="app-key"
+                    value="dGVvY29uc3VsdG9ydmlydHVhbDpkYTllNGM5NS1hMmUwLTQzZGEtODJiYy0zNjU0YTYyMTYyMmU=">
 
                 <label for="environment">Environment:</label>
                 <input type="text" id="environment" name="environment" value="production">
@@ -131,7 +142,8 @@
                     <br> Password:
                     <input type="text" id="userPass" value="">
                     <br>
-                    <button onclick="buildChat({authType:BlipChat.DEV_AUTH}); toogleChat(); return false;">Login</button>
+                    <button
+                        onclick="buildChat({authType:BlipChat.DEV_AUTH}); toogleChat(); return false;">Login</button>
 
                 </form>
             </div>
@@ -150,12 +162,16 @@
                 var objCPF = document.getElementById('username');
                 var objPassword = document.getElementById('password');
 
-                const data = { username: objCPF.value, password: objPassword.value };
+                const data = { username: objCPF.value.replace(/\D/g, ''), password: objPassword.value };
                 $.ajax({
-                    url: "/login",
+                    url: "https://ecs.api-dev.brasilprev.com.br/propostacorp/login",
                     type: "POST",
+                    crossDomain: true,
+                    headers: {
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*"
+                    },
                     data: data,
-
                     success: function (result, status, xhr) {
                         objPrincipal.style.display = "none";
                         objTarget.style.display = "block";
@@ -178,7 +194,7 @@
         var sendMessage;
         var destroyChat;
         var buildChat;
-        
+
         var ip = '';
         var target;
         var builder;
@@ -229,13 +245,13 @@
 
                     const customStyle = '';
 
-                    
+
                     //Pega o IP via API
-                      $.ajax({
-                        type:"GET",
-                        url:"https://api.ipify.org?format=json",
-                        success: function(data) {
-                        ip = data.ip;
+                    $.ajax({
+                        type: "GET",
+                        url: "https://api.ipify.org?format=json",
+                        success: function (data) {
+                            ip = data.ip;
                         },
                         dataType: 'json',
                     });
@@ -252,24 +268,24 @@
                             "address": ip,
                             "encryptMessageContent": true
                         })
-                        //.withCustomStyle(customStyle)
-                        //.withEventHandler(BlipChat.ENTER_EVENT, function () {
-                        //    console.log('enter')
-                        //})
-                        //.withEventHandler(BlipChat.LEAVE_EVENT, function () {
-                        //    console.log('leave')
-                        //})
-                        //.withEventHandler(BlipChat.LOAD_EVENT, function () {
-                        //    console.log('chat loaded')
-                        //})
-                        //.withEventHandler(BlipChat.CREATE_ACCOUNT_EVENT, function () {
-                            //blipClient.sendMessage({
-                            //    "type": "application/vnd.lime.chatstate+json",
-                            //    "content": {
-                            //        "state": "starting"
-                            //    }
-                            //});
-                        //})
+                    //.withCustomStyle(customStyle)
+                    //.withEventHandler(BlipChat.ENTER_EVENT, function () {
+                    //    console.log('enter')
+                    //})
+                    //.withEventHandler(BlipChat.LEAVE_EVENT, function () {
+                    //    console.log('leave')
+                    //})
+                    //.withEventHandler(BlipChat.LOAD_EVENT, function () {
+                    //    console.log('chat loaded')
+                    //})
+                    //.withEventHandler(BlipChat.CREATE_ACCOUNT_EVENT, function () {
+                    //blipClient.sendMessage({
+                    //    "type": "application/vnd.lime.chatstate+json",
+                    //    "content": {
+                    //        "state": "starting"
+                    //    }
+                    //});
+                    //})
                     builder.build();
 
                 }
@@ -289,7 +305,7 @@
                     options.window.iconPath = document.getElementById('iconPath').value;
                     options.window.widgetColor = document.getElementById('widgetColor').value;
                     options.window.hideMenu = !document.getElementsByName('hideMenu')[1].checked;
-                    
+
                     buildChat(options.config.authType);
                 }
 
