@@ -154,39 +154,24 @@
 
     <script>
         function login() {
+            var objPrincipal = document.getElementById('principal');
+            var objTarget = document.getElementById('sdk-target');
+            var objAlert = document.getElementById('alert');
+            var objCPF = document.getElementById('username');
+            var objPassword = document.getElementById('password');
 
-            try {
-                var objPrincipal = document.getElementById('principal');
-                var objTarget = document.getElementById('sdk-target');
-                var objAlert = document.getElementById('alert');
-                var objCPF = document.getElementById('username');
-                var objPassword = document.getElementById('password');
-
-                const data = { username: objCPF.value.replace(/\D/g, ''), password: objPassword.value };
-                $.ajax({
-                    url: "https://ecs.api-dev.brasilprev.com.br/propostacorp/login",
-                    type: "POST",
-                    crossDomain: true,
-                    headers: {
-                        "accept": "application/json",
-                        "Access-Control-Allow-Origin": "*"
-                    },
-                    data: data,
-                    success: function (result, status, xhr) {
-                        objPrincipal.style.display = "none";
-                        objTarget.style.display = "block";
-                        objAlert.style.display = "none";
-                        buildChat({ authType: BlipChat.DEV_AUTH });
-                        toogleChat();
-                    },
-
-                    error: function (error) {
-                        objAlert.style.display = "block";
-                    }
-                });
-            } catch (err) {
-                alert(err);
-            }
+            var data = { username: objCPF.value.replace(/\D/g, ''), password: objPassword.value };
+            //$.post("http://localhost:8080/propostacorp/login", JSON.stringify(data), (result, status, xhr) => {
+            $.post("https://ecs.api-dev.brasilprev.com.br/propostacorp/login", JSON.stringify(data), (result, status, xhr) => {
+                console.log(result);
+                objPrincipal.style.display = "none";
+                objTarget.style.display = "block";
+                objAlert.style.display = "none";
+                buildChat({ authType: BlipChat.DEV_AUTH });
+                toogleChat();
+            }).fail((error) => {
+                objAlert.style.display = "block";
+            });
         }
     </script>
 
