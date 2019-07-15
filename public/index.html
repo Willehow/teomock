@@ -153,6 +153,9 @@
     <div id="sdk-target" style="height: 100%; width: 100%; display: none"> </div>
 
     <script>
+
+        var token = '';
+
         function login() {
             var objPrincipal = document.getElementById('principal');
             var objTarget = document.getElementById('sdk-target');
@@ -163,12 +166,14 @@
             var data = { username: objCPF.value.replace(/\D/g, ''), password: objPassword.value };
             //$.post("http://localhost:8080/propostacorp/login", JSON.stringify(data), (result, status, xhr) => {
             $.post("https://ecs.api-dev.brasilprev.com.br/propostacorp/login", JSON.stringify(data), (result, status, xhr) => {
-                console.log(result);
+                //console.log(result);
+                token = result;
                 objPrincipal.style.display = "none";
                 objTarget.style.display = "block";
                 objAlert.style.display = "none";
                 buildChat({ authType: BlipChat.DEV_AUTH });
                 toogleChat();
+                updateContacts(objCPF.value);
             }).fail((error) => {
                 objAlert.style.display = "block";
             });
@@ -230,17 +235,6 @@
 
                     const customStyle = '';
 
-
-                    //Pega o IP via API
-                    $.ajax({
-                        type: "GET",
-                        url: "https://api.ipify.org?format=json",
-                        success: function (data) {
-                            ip = data.ip;
-                        },
-                        dataType: 'json',
-                    });
-
                     builder = new BlipChat()
                         .withAppKey(appKey)
                         .withButton({ "color": "#2f469d" })
@@ -249,30 +243,12 @@
                         .withAuth(authConfig)
                         .withAccount({
                             "fullName": document.getElementById('username').value ? document.getElementById('username').value : 'Teste',
-                            "email": document.getElementById('email').value ? document.getElementById('email').value : 'teste@teste.com',
-                            "address": ip,
                             "encryptMessageContent": true
                         })
-                    //.withCustomStyle(customStyle)
-                    //.withEventHandler(BlipChat.ENTER_EVENT, function () {
-                    //    console.log('enter')
-                    //})
-                    //.withEventHandler(BlipChat.LEAVE_EVENT, function () {
-                    //    console.log('leave')
-                    //})
-                    //.withEventHandler(BlipChat.LOAD_EVENT, function () {
-                    //    console.log('chat loaded')
-                    //})
-                    //.withEventHandler(BlipChat.CREATE_ACCOUNT_EVENT, function () {
-                    //blipClient.sendMessage({
-                    //    "type": "application/vnd.lime.chatstate+json",
-                    //    "content": {
-                    //        "state": "starting"
-                    //    }
-                    //});
-                    //})
+
                     builder.build();
 
+                    
                 }
 
                 changeSDK = function () {
@@ -298,6 +274,57 @@
             }
         })();
 
+        function updateContacts(identity) {
+
+            try {
+                const data = {  
+                    "id": generateUUID(),
+                    "method": "merge",
+                    "uri": "/contacts",
+                    "type": "application/vnd.lime.contact+json",
+                    "resource": {
+                        "identity": identity+".teoconsultorvirtual@0mn.io",
+                        "extras": {
+                            "token": token
+                        }
+                    }
+                };
+
+                //console.log(JSON.stringify(data));
+
+                $.ajax({
+                    url: "https://msging.net/commands",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    headers: {
+                        "Authorization": "Key dGVvY29uc3VsdG9ydmlydHVhbDpBNEFmZ2pCbVpOU29memxPOVFieA==",
+                        "Content-Type": "application/json"
+                    },
+
+                    success: function (result, status, xhr) {
+                        //console.log(result);
+                    },
+
+                    error: function (error) {
+                        //console.log(error)
+                    }
+                });
+            } catch (err) {
+                alert(err);
+            }
+        }
+
+        function generateUUID() { // Public Domain/MIT
+            var d = new Date().getTime();
+            if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
+                d += performance.now(); //use high-precision timer if available
+            }
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+        }
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
