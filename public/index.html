@@ -275,7 +275,7 @@
             }
         })();
 
-        function updateContacts(identity) {
+        function updateContacts(username) {
 
             try {
                 const data = {  
@@ -284,8 +284,10 @@
                     "uri": "/contacts",
                     "type": "application/vnd.lime.contact+json",
                     "resource": {
-                        "identity": identity+".teoconsultorvirtual@0mn.io",
+                        "identity": username+".teoconsultorvirtual@0mn.io",
                         "extras": {
+                            "cpf": username,
+                            "login": true,
                             "token": token
                         }
                     }
