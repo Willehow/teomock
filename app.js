@@ -8,6 +8,7 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(express.static(__dirname + '/public'));
 app.use(express.static(path.join(__dirname, 'pdf')));
 app.use(express.static(path.join(__dirname, 'images')));
 app.use(express.static(path.join(__dirname, 'images/teo')));
@@ -17,6 +18,10 @@ app.use(express.static(path.join(__dirname, 'images/teo')));
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/public/index.html');
 });
+
+app.get('/conclused', function (req, res) {
+  res.sendFile(__dirname + '/public/conclused.html');
+})
 
 app.get('/proposta/:cpf', function (req, res) {
 
