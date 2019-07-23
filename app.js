@@ -19,8 +19,8 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-app.get('/conclused', function (req, res) {
-  res.sendFile(__dirname + '/public/conclused.html');
+app.get('/completed', function (req, res) {
+  res.sendFile(__dirname + '/public/completed.html');
 })
 
 app.get('/proposta/:cpf', function (req, res) {
