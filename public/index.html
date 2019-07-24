@@ -1,111 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
     <title>
-        Brasilprev Empresarial
+        BrasilPrev Empresarial
     </title>
-    <style>
-        html {
-            height: 100%;
-            width: 100%;
-        }
-
-        body {
-            height: 100%;
-            width: 100%;
-            background: -webkit-linear-gradient(to bottom, #2f469d, #ffe775);
-            background: linear-gradient(to bottom, #2f469d, #ffe775);
-        }
-
-        .container {
-            background: #fff;
-            margin: 50px;
-            padding: 10px 10px;
-            border-radius: 10px;
-            box-shadow: 15px 20px 0px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-login {
-            background: #2f469d;
-            color: #fff;
-            font-weight: 600;
-            width: 100%;
-        }
-
-        :-ms-input-placeholder {
-            /* IE 10+ */
-            color: #d3d3d3 !important;
-        }
-
-        ::-webkit-input-placeholder {
-            /* Chrome/Opera/Safari */
-            color: #d3d3d3 !important;
-        }
-
-        ::-moz-placeholder {
-            /* Firefox 19+ */
-            color: #d3d3d3 !important;
-        }
-
-        :-ms-input-placeholder {
-            /* IE 10+ */
-            color: #d3d3d3 !important;
-        }
-
-        :-moz-placeholder {
-            /* Firefox 18- */
-            color: #d3d3d3 !important;
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-
 </head>
 
 <body>
-    <section id="principal" class=" col-md-12">
-        <div class="container col-md-4">
-            <form onsubmit="login(); return false;">
-                <div>
-                    <p>
-                        <img src="logo.png" class="img-fluid rounded" alt="Brasilprev">
-                    </p>
-                </div>
-                <div id="alert" class="alert alert-danger" role="alert" style="display: none">
-                    CPF e/ou senha incorreto(s).
-                </div>
-                <p>
-                    <label for="username">CPF</label>
-                    <input type="tel" class="form-control" id="username" name="username" placeholder="000.000.000-00"
-                        maxlength="15" data-mask="000.000.000-00" required>
-                </p>
-                <p>
-                    <label for="password">Senha*</label>
-                    <input type="password" pattern="[0-9]*" inputmode="numeric" class="form-control" id="password"
-                        name="password" placeholder="Ex: 12341985" maxlength="8" required>
-                    <p class="font-italic" style="font-size: 0.1in !important">*Sua senha é composta pelos 4 primeiros
-                        dígitos do CPF junto ao seu ano de nascimento.</p>
-                </p>
-                <p>
-                    <input type="submit" value="Entrar" class="btn btn-login">
-                </p>
-            </form>
+    <div id="principal" class="context">
+        <div id="conteudo">
+            <div class="conteudo">
+                <form onsubmit="login(); return false;">
+                    <img src="logo.png" class="logoBp" alt="Brasilprev">
+
+                    <div class="group">
+                        <input data-mask="000.000.000-00" id="username" name="username"
+                            maxlength="15" type="tel" required>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Seu CPF</label>
+                    </div>
+
+                    <div class="group">
+                        <input type="password" pattern="[0-9]*" inputmode="numeric" id="password"
+                            name="password" maxlength="8" required>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Sua senha</label>
+                    </div>
+
+                    <div id="alert" class="alert-danger" role="alert" style="display: none">
+                        CPF e/ou senha incorreto(s).
+                    </div>
+
+                    <input type="submit" value="Entrar" class="btn-login">
+                </form>
+            </div>
         </div>
-    </section>
-
-    <script>
-        //Mascara CPF
-        $(document).ready(function ($) {
-            $('#username').mask('999.999.999-99');
-        });
-    </script>
-
-    <script src="https://unpkg.com/blip-chat-widget" type="text/javascript">
-    </script>
-    <div class="container d-none">
+    </div>
+    <script src="https://unpkg.com/blip-chat-widget" type="text/javascript"></script>
+    <div class="blip container d-none">
         <div class="column">
 
             <div class="row">
@@ -144,191 +83,28 @@
                     <br>
                     <button
                         onclick="buildChat({authType:BlipChat.DEV_AUTH}); toogleChat(); return false;">Login</button>
-
                 </form>
             </div>
 
         </div>
     </div>
     <div id="sdk-target" style="height: 100%; width: 100%; display: none"> </div>
-
-    <script>
-
-        var token = '';
-
-        function login() {
-            var objPrincipal = document.getElementById('principal');
-            var objTarget = document.getElementById('sdk-target');
-            var objAlert = document.getElementById('alert');
-            var objCPF = document.getElementById('username');
-            var objPassword = document.getElementById('password');
-
-            var data = { username: objCPF.value.replace(/\D/g, ''), password: objPassword.value };
-            //$.post("http://localhost:8080/propostacorp/login", JSON.stringify(data), (result, status, xhr) => {
-            $.post("https://ecs.api-dev.brasilprev.com.br/propostacorp/login", JSON.stringify(data), (result, status, xhr) => {
-                //console.log(result);
-                token = result.token;
-                objPrincipal.style.display = "none";
-                objTarget.style.display = "block";
-                objAlert.style.display = "none";
-                buildChat({ authType: BlipChat.DEV_AUTH });
-                toogleChat();
-                updateContacts(objCPF.value);
-            }).fail((error) => {
-                //console.log(error);
-                objAlert.style.display = "block";
-            });
-        }
-    </script>
-
-    <script>
-        var sendMessage;
-        var destroyChat;
-        var buildChat;
-
-        var ip = '';
-        var target;
-        var builder;
-        (function () {
-            window.onload = function () {
-                toogleChat = function () {
-                    builder.toogleChat();
-                }
-
-                sendMessage = function () {
-                    let msgFieldValue
-                    try {
-                        msgFieldValue = JSON.parse(document.getElementById('test-message').value);
-                    } catch (error) {
-                        msgFieldValue = document.getElementById('test-message').value;
-                    }
-                    builder.sendMessage(msgFieldValue);
-                }
-
-                sendCommand = function () {
-                    try {
-                        const command = JSON.parse(document.getElementById('test-command').value);
-                        builder.sendCommand(command);
-                    } catch (error) {
-                        alert('Comando invalido')
-                    }
-                }
-
-                destroyChat = function () {
-                    builder.destroy();
-                    builder = null;
-                }
-
-                buildChat = function (authConfig) {
-                    if (builder) {
-                        destroyChat();
-                    }
-
-                    if (authConfig && authConfig.authType == BlipChat.DEV_AUTH) {
-                        authConfig.userIdentity = document.getElementById('username').value ? document.getElementById('username').value : '01684334-71c7-40e0-ad1a-5ce372de1a08', // Required
-                            authConfig.userPassword = document.getElementById('password').value ? document.getElementById('password').value : 'MjU2OWNmOTItYmRjZi00Njg0LTljZDktMWQxNjQxYmYxMGU1', // Required
-                            authConfig.userName = document.getElementById('username').value ? document.getElementById('username').value : '', // Optional
-                            authConfig.userEmail = document.getElementById('email').value ? document.getElementById('email').value : ''// Optional
-                    }
-
-                    const environment = document.getElementById('environment').value ? document.getElementById('environment').value : 'homolog'
-                    const appKey = document.getElementById('app-key').value || 'YmxpcHRlc3RjYXJkczo3YTcwZTUyNi04YzNjLTRmNGQtYWZjYi00ZWFmNzk5ZDFmNjk='
-
-                    const customStyle = '';
-
-                    builder = new BlipChat()
-                        .withAppKey(appKey)
-                        .withButton({ "color": "#2f469d" })
-                        .withTarget('sdk-target')
-                        .withEnvironment(environment)
-                        .withAuth(authConfig)
-                        .withAccount({
-                            "fullName": document.getElementById('username').value ? document.getElementById('username').value : 'Teste',
-                            "encryptMessageContent": true
-                        })
-
-                    builder.build();
-
-                    
-                }
-
-                changeSDK = function () {
-                    if (target) {
-                        target = null;
-                    } else {
-                        target = 'sdk-target';
-                    }
-
-                    buildChat();
-                }
-
-                applyValues = function () {
-                    options.window.title = document.getElementById('title').value;
-                    options.window.iconPath = document.getElementById('iconPath').value;
-                    options.window.widgetColor = document.getElementById('widgetColor').value;
-                    options.window.hideMenu = !document.getElementsByName('hideMenu')[1].checked;
-
-                    buildChat(options.config.authType);
-                }
-
-                buildChat();
-            }
-        })();
-
-        function updateContacts(username) {
-
-            try {
-                const data = {  
-                    "id": generateUUID(),
-                    "method": "merge",
-                    "uri": "/contacts",
-                    "type": "application/vnd.lime.contact+json",
-                    "resource": {
-                        "identity": username+".teoconsultorvirtual@0mn.io",
-                        "extras": {
-                            "cpf": username,
-                            "login": true,
-                            "token": token
-                        }
-                    }
-                };
-
-                //console.log(JSON.stringify(data));
-
-                $.ajax({
-                    url: "https://msging.net/commands",
-                    type: "POST",
-                    data: JSON.stringify(data),
-                    headers: {
-                        "Authorization": "Key dGVvY29uc3VsdG9ydmlydHVhbDpBNEFmZ2pCbVpOU29memxPOVFieA==",
-                        "Content-Type": "application/json"
-                    },
-
-                    success: function (result, status, xhr) {
-                        //console.log(result);
-                    },
-
-                    error: function (error) {
-                        //console.log(error)
-                    }
-                });
-            } catch (err) {
-                alert(err);
-            }
-        }
-
-        function generateUUID() { // Public Domain/MIT
-            var d = new Date().getTime();
-            if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
-                d += performance.now(); //use high-precision timer if available
-            }
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                var r = (d + Math.random() * 16) % 16 | 0;
-                d = Math.floor(d / 16);
-                return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-            });
-        }
-    </script>
+    <div class="area">
+        <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <script src="index.js"></script>
+    <script src="blip.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
