@@ -20,6 +20,11 @@ body {
   margin-top: -64px;
 }
 
+.logoBpCompleted {
+  border-radius: 10px;
+  width: 100%;
+}
+
 #sdk-target {
   position: absolute;
   z-index: 99999;
