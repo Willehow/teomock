@@ -48,7 +48,8 @@ var builder;
             }
 
             const environment = document.getElementById('environment').value ? document.getElementById('environment').value : 'homolog'
-            const appKey = document.getElementById('app-key').value || 'YmxpcHRlc3RjYXJkczo3YTcwZTUyNi04YzNjLTRmNGQtYWZjYi00ZWFmNzk5ZDFmNjk='
+            //const appKey = document.getElementById('app-key').value || '#{APP_KEY}#'
+            const appKey = document.getElementById('app-key').value || 'cm91dGVydGVvZGV2OmRjYTZmYTUwLTRiZWYtNGQwNi1hMTFjLWU0ODUyMjViYTU2Ng=='
 
             const customStyle = '';
 
@@ -91,7 +92,7 @@ var builder;
     }
 })();
 
-function updateContacts(username) {
+function updateContacts(username,novoTeo) {
 
     try {
         const data = {
@@ -100,11 +101,13 @@ function updateContacts(username) {
             "uri": "/contacts",
             "type": "application/vnd.lime.contact+json",
             "resource": {
-                "identity": username + ".teoconsultorvirtual@0mn.io",
+                //"identity": username + ".#{ID_CHAT}#@0mn.io",
+                "identity": username + ".routerteodev@0mn.io",
                 "extras": {
                     "cpf": username,
                     "login": true,
-                    "token": token
+                    "token": token,
+                    "novoTeo": novoTeo
                 }
             }
         };
@@ -114,7 +117,8 @@ function updateContacts(username) {
             type: "POST",
             data: JSON.stringify(data),
             headers: {
-                "Authorization": "Key dGVvY29uc3VsdG9ydmlydHVhbDpBNEFmZ2pCbVpOU29memxPOVFieA==",
+                //"Authorization": "Key #{KEY_HTTP}#",
+                "Authorization": "Key cm91dGVydGVvZGV2OmJGaEpaNEJkbVV4bHphSGUySlVV",
                 "Content-Type": "application/json"
             }
         });
