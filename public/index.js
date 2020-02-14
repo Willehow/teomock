@@ -23,6 +23,7 @@ function login() {
       objAlert.style.display = "block";
     }
   }
+
 }
 
 function isValidLogin(url, data, ehNovoTeo) {
@@ -36,8 +37,12 @@ function isValidLogin(url, data, ehNovoTeo) {
     "data": JSON.stringify(data),
   };
   novoTeo = ehNovoTeo;
+
+
+  var retorno = true;
   
-  return $.ajax(settings).done(function (response) {
+  $.ajax(settings).done(function (response) {
+    
     token = response.token;
     
     objPrincipal.style.display = "none";
@@ -45,12 +50,12 @@ function isValidLogin(url, data, ehNovoTeo) {
     objAlert.style.display = "none";
     
     console.log("abrindo blip");
-
     buildChat({ authType: BlipChat.DEV_AUTH });
     toogleChat();
     updateContacts(objCPF.value,novoTeo);
-    return new Boolean(true);
   }).fail(function (code, textStatus) {
-    return new Boolean(false);
+    retorno = false;
   });
+
+  return retorno;
 }
