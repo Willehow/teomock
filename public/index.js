@@ -48,8 +48,7 @@ function isValidLogin(url, data, ehNovoTeo) {
     buildChat({ authType: BlipChat.DEV_AUTH });
     toogleChat();
     updateContacts(objCPF.value,novoTeo);
-    return new Boolean(true);
   }).fail(function (code, textStatus) {
-    return new Boolean(false);
+    console.log("error");
   });
 }
