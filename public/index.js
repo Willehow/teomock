@@ -36,7 +36,7 @@ function isValidLogin(url, data, ehNovoTeo) {
   };
   novoTeo = ehNovoTeo;
   
-  $.ajax(settings).done(function (response) {
+  return $.ajax(settings).done(function (response) {
     token = response.token;
     
     objPrincipal.style.display = "none";
@@ -48,9 +48,8 @@ function isValidLogin(url, data, ehNovoTeo) {
     buildChat({ authType: BlipChat.DEV_AUTH });
     toogleChat();
     updateContacts(objCPF.value,novoTeo);
+    return new Boolean(true);
   }).fail(function (code, textStatus) {
     return new Boolean(false);
   });
-
-  return new Boolean(true);
 }
